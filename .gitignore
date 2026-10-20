@@ -1,8 +1,1 @@
-task-1/pi_O0
-task-1/pi_O3
-task-1/pi_semi
-task-1/pi_avx2
-task-1/pi_avx512
-task-1/asm/
-task-1/results/
-task-1/report/report.pdf
+task-1/build/

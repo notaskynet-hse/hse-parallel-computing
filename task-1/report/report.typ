@@ -35,7 +35,7 @@ $ pi approx 2 (h sum_(i=0)^(N-1) (sin t_i)/t_i + (cos X)/X + (sin X)/X^2), quad 
 
 = Вычислительная система и компилятор
 
-#raw(read("/results/sysinfo.txt"))
+#raw(read("/build/sysinfo.txt"))
 
 Репозиторий: #todo[ссылка на репозиторий]
 
@@ -62,7 +62,7 @@ $ pi approx 2 (h sum_(i=0)^(N-1) (sin t_i)/t_i + (cos X)/X + (sin X)/X^2), quad 
 
 = Результаты
 
-#let rows = csv("/results/results.csv").slice(1)
+#let rows = csv("/build/results.csv").slice(1)
 #let desc = (
   O0: "исходная, -O0",
   O3: "только ключи компилятора, -O3 -march=native",
@@ -108,11 +108,11 @@ $ pi approx 2 (h sum_(i=0)^(N-1) (sin t_i)/t_i + (cos X)/X + (sin X)/X^2), quad 
 
 Основной цикл ручной версии `avx2_c` (`vfmadd...ps ymm`, `vrcpps`):
 
-#raw(read("/asm/avx2_c.txt"), lang: "asm", block: true)
+#raw(read("/build/avx2_c.txt"), lang: "asm", block: true)
 
 Для сравнения, цикл полуавтоматической версии (вызов векторного `sinf`/`cosf`):
 
-#raw(read("/asm/semi.txt"), lang: "asm", block: true)
+#raw(read("/build/semi.txt"), lang: "asm", block: true)
 
 = Вывод
 

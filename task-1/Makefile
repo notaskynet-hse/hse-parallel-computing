@@ -5,7 +5,7 @@ VECINFO = -fopt-info-vec-all
 LDLIBS = -lm
 
 B = build
-BINS = $(B)/pi_O0 $(B)/pi_O3 $(B)/pi_semi $(B)/pi_avx2 $(B)/pi_avx512
+BINS = $(B)/pi_O0 $(B)/pi_O3 $(B)/pi_fast $(B)/pi_semi $(B)/pi_avx2 $(B)/pi_avx512
 HDR = src/common.h
 
 all: $(BINS)
@@ -18,6 +18,9 @@ $(B)/pi_O0: src/pi_naive.c $(HDR) | $(B)
 
 $(B)/pi_O3: src/pi_naive.c $(HDR) | $(B)
 	$(CC) -O3 -march=$(ARCH) -DSTAGE='"O3"' $< -o $@ $(LDLIBS)
+
+$(B)/pi_fast: src/pi_naive.c $(HDR) | $(B)
+	$(CC) -O3 -march=$(ARCH) -ffast-math -DSTAGE='"fast"' $< -o $@ $(LDLIBS)
 
 $(B)/pi_semi: src/pi_semi.c $(HDR) | $(B)
 	$(CC) -O3 -march=$(ARCH) -ffast-math -fopenmp-simd $< -o $@ $(LDLIBS)
@@ -35,7 +38,7 @@ sysinfo: | $(B)
 
 bench: all
 	{ echo stage,time_s,pi,error; \
-	  $(B)/pi_O0 $(ARGS); $(B)/pi_O3 $(ARGS); $(B)/pi_semi $(ARGS); \
+	  $(B)/pi_O0 $(ARGS); $(B)/pi_O3 $(ARGS); $(B)/pi_fast $(ARGS); $(B)/pi_semi $(ARGS); \
 	  $(B)/pi_avx2 $(ARGS); $(B)/pi_avx512 $(ARGS); } > $(B)/results.csv
 
 define extract
@@ -49,8 +52,8 @@ asm: | $(B)
 	$(CC) -O3 -S -masm=intel src/pi_avx512.c -o $(B)/avx512.s
 	$(call extract,block_naive,naive,naive)
 	$(call extract,block_semi,semi,semi)
-	$(call extract,block_avx2_c,avx2,avx2_c)
-	$(call extract,block_avx512_b,avx512,avx512_b)
+	$(call extract,block_avx2,avx2,avx2)
+	$(call extract,block_avx512,avx512,avx512)
 
 vecreport: | $(B)
 	$(CC) -O3 -march=$(ARCH) $(VECINFO) -c src/pi_naive.c -o /dev/null 2> $(B)/vec_naive.txt || true

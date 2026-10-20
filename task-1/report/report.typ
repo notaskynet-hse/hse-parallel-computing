@@ -37,11 +37,9 @@ $ pi approx 2 (h sum_(i=0)^(N-1) (sin t_i)/t_i + (cos X)/X + (sin X)/X^2), quad 
 
 #raw(read("/build/sysinfo.txt"))
 
-Репозиторий: #todo[ссылка на репозиторий]
-
 = Реализации
 
-Исходники лежат в `task-1/src`, сборка и замеры выполняются через `Makefile`.
+Исходники приведены в конце отчёта, сборка и замеры выполняются через `Makefile`.
 
 / `O0`: `pi_naive.c`, `-O0`. Скалярный цикл с вызовами `sinf`/`cosf` и делением.
 / `O3`: тот же код, `-O3 -march=native`. Цикл не векторизуется: редукция по `float` без `-ffast-math`
@@ -120,4 +118,7 @@ $ pi approx 2 (h sum_(i=0)^(N-1) (sin t_i)/t_i + (cos X)/X + (sin X)/X^2), quad 
 
 = Листинг программы
 
-Исходный код приложен в репозитории (`task-1/src`).
+#for f in ("common.h", "pi_naive.c", "pi_semi.c", "pi_avx2.c", "pi_avx512.c") [
+  == #raw(f)
+  #raw(read("/src/" + f), lang: "c", block: true)
+]
